@@ -4,13 +4,15 @@ class Course {
   final String title;
   final String description;
   final double price;
-  final bool isPurchased;
+  final double discountPrice;
+  bool isPurchased;
 
   Course({
     required this.id,
     required this.title,
     required this.description,
     required this.price,
+    required this.discountPrice,
     this.isPurchased = false,
   });
 
@@ -20,6 +22,7 @@ class Course {
       title: json['title'],
       description: json['description'],
       price: json['price'].toDouble(),
+      discountPrice: json['discountPrice'].toDouble(),
       isPurchased: json['isPurchased'] ?? false,
     );
   }
