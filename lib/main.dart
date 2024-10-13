@@ -1,7 +1,7 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
+// import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_poc/core/services/api_service.dart';
 import 'package:in_app_purchase_poc/core/services/api_service_interface.dart';
 import 'package:in_app_purchase_poc/features/course_details/bloc/course_details_bloc.dart';
@@ -15,7 +15,7 @@ import 'features/course_listing/services/mock_course_service.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  InAppPurchase.instance.isAvailable();
+  // InAppPurchase.instance.isAvailable();
   runApp(const MyApp());
 }
 
@@ -39,8 +39,12 @@ class MyApp extends StatelessWidget {
             create: (context) =>
                 CourseDetailsBloc(context.read<ApiServiceInterface>()),
           ),
+          // BlocProvider<PurchaseBloc>(
+          //   create: (context) => PurchaseBloc(PurchaseRepository()),
+          // ),
+
           BlocProvider<PurchaseBloc>(
-            create: (context) => PurchaseBloc(PurchaseRepository()),
+            create: (context) => PurchaseBloc(MockPurchaseRepository()),
           ),
         ],
         child: MaterialApp(

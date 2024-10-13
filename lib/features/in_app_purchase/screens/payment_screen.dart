@@ -27,8 +27,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 const SnackBar(content: Text('Purchase successful!')));
             Navigator.of(context).popUntil((route) => route.isFirst);
           } else if (state is PurchaseError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Error: ${state.message}')));
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text('Error: ')));
           }
         },
         builder: (context, state) {
