@@ -23,8 +23,7 @@ class MyApp extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<ApiServiceInterface>(
-          create: (context) =>
-              ApiService(), // Use your actual API service implementation
+          create: (context) => ApiService(),
         ),
       ],
       child: MultiBlocProvider(

@@ -6,13 +6,13 @@ abstract class CourseService {
   Future<List<Course>> getCourses();
 }
 
-class CourseServiceImpl implements CourseService {
-  final ApiServiceInterface _apiService;
+// class CourseServiceImpl implements CourseService {
+//   final ApiServiceInterface _apiService;
 
-  CourseServiceImpl(this._apiService);
+//   CourseServiceImpl(this._apiService);
 
-  @override
-  Future<List<Course>> getCourses() async {
-    return await _apiService.getCourses();
-  }
-}
+//   @override
+//   Future<List<Course>> getCourses() async {
+//     return await _apiService.getCourses();
+//   }
+// }

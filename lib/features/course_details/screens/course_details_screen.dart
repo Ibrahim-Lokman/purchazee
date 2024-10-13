@@ -35,29 +35,33 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
           if (state is CourseDetailsLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is CourseDetailsLoaded) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(state.course.title,
-                    style: Theme.of(context).textTheme.headlineSmall),
-                const SizedBox(height: 10),
-                Text(state.course.description),
-                const SizedBox(height: 20),
-                Text('Price: \$${state.course.price.toStringAsFixed(2)}',
-                    style: const TextStyle(fontWeight: FontWeight.bold)),
-                const SizedBox(height: 20),
-                if (!state.course.isPurchased)
-                  BuyNowButton(
-                    onPressed: () {
-                      // Navigate to payment screen
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) =>
-                                  PaymentScreen(courseId: state.course.id)));
-                    },
-                  ),
-              ],
+            return Container(
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(state.course.title,
+                      style: Theme.of(context).textTheme.headlineSmall),
+                  const SizedBox(height: 10),
+                  Text(state.course.description),
+                  const SizedBox(height: 20),
+                  Text('Price: \$${state.course.price.toStringAsFixed(2)}',
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 20),
+                  if (!state.course.isPurchased)
+                    BuyNowButton(
+                      onPressed: () {
+                        // Navigate to payment screen
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) =>
+                                    PaymentScreen(courseId: state.course.id)));
+                      },
+                    ),
+                ],
+              ),
             );
           } else if (state is CourseDetailsError) {
             return Center(child: Text('Error: ${state.message}'));

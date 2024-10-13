@@ -26,4 +26,10 @@ class Course {
       isPurchased: json['isPurchased'] ?? false,
     );
   }
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return 'Course{id: $id, title: $title, description: $description, price: $price, discountPrice: $discountPrice, isPurchased: $isPurchased}';
+  }
 }

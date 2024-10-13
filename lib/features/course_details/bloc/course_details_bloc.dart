@@ -16,6 +16,11 @@ class CourseDetailsBloc extends Bloc<CourseDetailsEvent, CourseDetailsState> {
     emit(CourseDetailsLoading());
     try {
       final course = await _apiService.getCourseDetails(event.courseId);
+
+      print("*** _onFetchCourseDetails");
+      print(course);
+      print("***");
+
       emit(CourseDetailsLoaded(course));
     } catch (e) {
       emit(CourseDetailsError(e.toString()));
