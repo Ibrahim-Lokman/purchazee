@@ -1,36 +1,66 @@
 // lib/features/in_app_purchase/bloc/purchase_bloc.dart
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_poc/core/services/api_service.dart';
 import 'package:in_app_purchase_poc/core/services/api_service_interface.dart';
+import 'package:in_app_purchase_poc/features/in_app_purchase/repository/purchase_repository.dart';
 import 'package:in_app_purchase_poc/mocks/mock_courses.dart';
 import '../services/purchase_service.dart';
 import 'purchase_event.dart';
 import 'purchase_state.dart';
 
+// class PurchaseBloc extends Bloc<PurchaseEvent, PurchaseState> {
+//   //final PurchaseService _purchaseService;
+
+//   final ApiServiceInterface _purchaseService;
+
+//   PurchaseBloc(this._purchaseService) : super(PurchaseInitial()) {
+//     on<PurchaseCourse>(_onPurchaseCourse);
+//   }
+
+//   Future<void> _onPurchaseCourse(
+//       PurchaseCourse event, Emitter<PurchaseState> emit) async {
+//     emit(PurchaseLoading());
+//     try {
+//       final success = await _purchaseService.purchaseCourse(event.courseId);
+//       if (success) {
+//         mockCourses
+//             .firstWhere((course) => course.id == event.courseId)
+//             .isPurchased = true;
+//         emit(PurchaseSuccess());
+//       } else {
+//         emit(PurchaseError('Purchase failed'));
+//       }
+//     } catch (e) {
+//       emit(PurchaseError(e.toString()));
+//     }
+//   }
+// }
 class PurchaseBloc extends Bloc<PurchaseEvent, PurchaseState> {
-  //final PurchaseService _purchaseService;
+  final PurchaseRepository _repository;
 
-  final ApiServiceInterface _purchaseService;
+  PurchaseBloc(this._repository) : super(PurchaseInitial()) {
+    on<PurchaseCourse>(_onBuyProduct);
 
-  PurchaseBloc(this._purchaseService) : super(PurchaseInitial()) {
-    on<PurchaseCourse>(_onPurchaseCourse);
+    _repository.purchaseUpdates.listen((purchases) {
+      for (var purchase in purchases) {
+        if (purchase.status == PurchaseStatus.purchased) {
+          // Handle successful purchase
+          add(PurchaseSuccess() as PurchaseEvent);
+        } else if (purchase.status == PurchaseStatus.error) {
+          // Handle purchase error
+          add(PurchaseError(purchase.error!.message) as PurchaseEvent);
+        }
+      }
+    });
   }
 
-  Future<void> _onPurchaseCourse(
+  Future<void> _onBuyProduct(
       PurchaseCourse event, Emitter<PurchaseState> emit) async {
     emit(PurchaseLoading());
-    try {
-      final success = await _purchaseService.purchaseCourse(event.courseId);
-      if (success) {
-        mockCourses
-            .firstWhere((course) => course.id == event.courseId)
-            .isPurchased = true;
-        emit(PurchaseSuccess());
-      } else {
-        emit(PurchaseError('Purchase failed'));
-      }
-    } catch (e) {
-      emit(PurchaseError(e.toString()));
+    final bool success = await _repository.buyProduct(event.courseId);
+    if (!success) {
+      emit(PurchaseError('Failed to initiate purchase'));
     }
   }
 }

@@ -1,10 +1,12 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_poc/core/services/api_service.dart';
 import 'package:in_app_purchase_poc/core/services/api_service_interface.dart';
 import 'package:in_app_purchase_poc/features/course_details/bloc/course_details_bloc.dart';
 import 'package:in_app_purchase_poc/features/in_app_purchase/bloc/purchase_bloc.dart';
+import 'package:in_app_purchase_poc/features/in_app_purchase/repository/purchase_repository.dart';
 import 'package:in_app_purchase_poc/features/in_app_purchase/services/purchase_service.dart';
 import 'features/course_listing/bloc/course_listing_bloc.dart';
 import 'features/course_listing/screens/your_courses_screen.dart';
@@ -12,6 +14,8 @@ import 'features/course_listing/screens/more_courses_screen.dart';
 import 'features/course_listing/services/mock_course_service.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  InAppPurchase.instance.isAvailable();
   runApp(const MyApp());
 }
 
@@ -36,8 +40,7 @@ class MyApp extends StatelessWidget {
                 CourseDetailsBloc(context.read<ApiServiceInterface>()),
           ),
           BlocProvider<PurchaseBloc>(
-            create: (context) =>
-                PurchaseBloc(context.read<ApiServiceInterface>()),
+            create: (context) => PurchaseBloc(PurchaseRepository()),
           ),
         ],
         child: MaterialApp(
